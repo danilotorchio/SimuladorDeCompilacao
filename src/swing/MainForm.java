@@ -159,17 +159,21 @@ public class MainForm extends JFrame {
 				compilador = new Compilador();
 			}
 
-			logger("Iniciando processo de compilação...\n");
-			compilador.iniciarCompilacao(tfExpressao.getText(), this::logger);
+			if (tfExpressao.getText().length() > 0) {
+				logger("Iniciando processo de compilação...\n");
+				compilador.iniciarCompilacao(tfExpressao.getText(), this::logger);
+			} else {
+				logger("Erro: Nenhuma expressão fornecida...");
+			}
 		}
 
 		public void logger(String str) {
 			String sText = taLog.getText();
-			if (sText.length() == 0) {
+
+			if (sText.length() == 0)
 				taLog.setText("-> " + str);
-			} else {
+			else
 				taLog.setText(sText + "\n" + "-> " + str);
-			}
 		}
 	}
 

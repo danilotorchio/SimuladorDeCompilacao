@@ -6,7 +6,18 @@ public class Compilador implements ICompilador {
 
 	@Override
 	public void iniciarCompilacao(String expressao, Consumer<String> logger) {
-		logger.accept("Expressão: " + expressao);
+		AnalisadorLexico lex = new AnalisadorLexico(expressao);
+
+		if (lex.realizarAnaliseLexica()) {
+			while (!lex.finalDaExpressaoLex()) {
+				logger.accept("Lex: " + lex.proximoLex());
+			}
+			logger.accept("Lex: " + lex.proximoLex());
+			while (!lex.inicioDaExpressaoLex()) {
+				logger.accept("Lex: " + lex.anteriorLex());
+			}
+			logger.accept("Lex: " + lex.anteriorLex());
+		}
 	}
 
 	@Override
