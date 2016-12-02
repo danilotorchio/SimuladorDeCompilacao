@@ -1,6 +1,7 @@
 package compilador;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class AnalisadorLexico implements IAnalisadorLexico {
 
@@ -15,14 +16,22 @@ public class AnalisadorLexico implements IAnalisadorLexico {
 		initAlfabeto();
 	}
 
+	public void iniciar() {
+		this.pos = 0;
+	}
+
 	@Override
-	public boolean realizarAnaliseLexica() {
-		boolean lexResult = true;
-		// for (int i = 0; i < this.exp.length() - 1; i++) {
-		// lexResult = getAlfabeto().contains(this.exp.charAt(i));
-		// if (!lexResult)
-		// break;
-		// }
+	public int realizarAnaliseLexica(Consumer<String> logger) {
+		logger.accept("Iniciando verificação do alfabeto...");
+		int lexResult = -1;
+
+		for (int i = 0; i < this.exp.length(); i++) {
+			if (!getAlfabeto().contains(this.exp.charAt(i))) {
+				lexResult = i;
+				break;
+			}
+		}
+
 		return lexResult;
 	}
 
@@ -67,6 +76,23 @@ public class AnalisadorLexico implements IAnalisadorLexico {
 	@Override
 	public void initAlfabeto() {
 		this.alfabeto = new ArrayList<Character>();
+
+		this.alfabeto.add('+');
+		this.alfabeto.add('-');
+		this.alfabeto.add('*');
+		this.alfabeto.add('/');
+		this.alfabeto.add('0');
+		this.alfabeto.add('1');
+		this.alfabeto.add('2');
+		this.alfabeto.add('3');
+		this.alfabeto.add('4');
+		this.alfabeto.add('5');
+		this.alfabeto.add('6');
+		this.alfabeto.add('7');
+		this.alfabeto.add('8');
+		this.alfabeto.add('9');
+		this.alfabeto.add('(');
+		this.alfabeto.add(')');
 	}
 
 	@Override

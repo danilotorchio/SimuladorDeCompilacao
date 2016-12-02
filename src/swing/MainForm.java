@@ -58,7 +58,6 @@ public class MainForm extends JFrame {
 					tfExpressao.setText("");
 					tfExpressao.requestFocus();
 
-					compilador.limparInstancias();
 					compilador = null;
 				}
 			}
@@ -143,7 +142,7 @@ public class MainForm extends JFrame {
 
 		taLog = new JTextArea(20, 60);
 		taLog.setBackground(Color.BLACK);
-		taLog.setForeground(Color.WHITE);
+		taLog.setForeground(Color.GREEN);
 		taLog.setEditable(false);
 		panelSouth.add(taLog);
 
@@ -155,6 +154,8 @@ public class MainForm extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			taLog.setText("");
+
 			if (compilador == null) {
 				compilador = new Compilador();
 			}

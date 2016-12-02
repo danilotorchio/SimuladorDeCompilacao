@@ -1,6 +1,7 @@
 package compilador;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 interface IAnalisadorLexico {
 
@@ -8,7 +9,7 @@ interface IAnalisadorLexico {
 
 	ArrayList<Character> getAlfabeto();
 
-	boolean realizarAnaliseLexica();
+	int realizarAnaliseLexica(Consumer<String> logger);
 
 	int getPosicaoLex();
 

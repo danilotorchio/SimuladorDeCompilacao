@@ -6,6 +6,4 @@ interface ICompilador {
 
 	void iniciarCompilacao(String expressao, Consumer<String> logger);
 
-	void limparInstancias();
-
 }
