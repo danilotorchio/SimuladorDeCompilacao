@@ -6,13 +6,18 @@ import java.util.function.Consumer;
 
 public class AnalisadorSintatico implements IAnalisadorSintatico {
 	private AnalisadorLexico lex;
+	public boolean sintaticaAceita;
 
 	public AnalisadorSintatico(AnalisadorLexico lexico) {
 		this.lex = lexico;
+		this.sintaticaAceita = true;
 	}
 
 	@Override
 	public boolean realizarAnaliseSintatica(Consumer<String> logger) {
+		logger.accept("Iniciando verificação sintatica...");
+		logger.accept("Expressao: " + lex.getExpressao());
+
 		Stack<Character> stack = new Stack<Character>();
 		Character ch = 0;
 
@@ -21,17 +26,31 @@ public class AnalisadorSintatico implements IAnalisadorSintatico {
 			ch = lex.proximoLex();
 
 			if (ch == '(') {
-				stack.push(reduzirParenteses());
+				stack.push(reduzirParenteses(logger));
 			} else {
 				stack.push(ch);
 			}
 		}
 
-		logger.accept(stack.toString());
+		String str = "";
+		for (Character c : stack) {
+			str += c;
+		}
+
+		if (str.length() > 1) {
+			logger.accept("Reduzindo expressão: " + str);
+			ch = reduzirExpressao(str);
+			logger.accept("Expressão reduzida: " + ch);
+		} else {
+			ch = str.toCharArray()[0];
+		}
+
+		logger.accept("Expressao final: " + ch);
 		return true;
 	}
 
-	public Character reduzirParenteses() {
+	@Override
+	public Character reduzirParenteses(Consumer<String> logger) {
 		Stack<Character> stack = new Stack<Character>();
 		Character ch = 0;
 
@@ -39,7 +58,13 @@ public class AnalisadorSintatico implements IAnalisadorSintatico {
 			ch = lex.proximoLex();
 
 			if (ch == '(') {
-				stack.push(reduzirParenteses());
+				ch = reduzirParenteses(logger);
+
+				if (this.sintaticaAceita) {
+					stack.push(ch);
+				} else {
+					break;
+				}
 			} else if (ch == ')') {
 				break;
 			} else {
@@ -52,9 +77,12 @@ public class AnalisadorSintatico implements IAnalisadorSintatico {
 			str += c;
 		}
 
-		return reduzirExpressao(str);
-		// TODO Adicionar verificação para quando não consegue reduzir a
-		// expressao (char < 65)
+		logger.accept("Reduzindo parenteses...");
+		logger.accept("Reduzindo expressão: " + str);
+		ch = reduzirExpressao(str);
+		logger.accept("Expressao reduzida: " + ch);
+
+		return ch;
 	}
 
 	@Override
@@ -66,6 +94,7 @@ public class AnalisadorSintatico implements IAnalisadorSintatico {
 			b2 = Character.isDigit(chr) || Character.isLetter(chr);
 
 			if (!b1 && !b2) {
+				this.sintaticaAceita = false;
 				return chr;
 			}
 		}

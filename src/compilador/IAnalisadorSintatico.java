@@ -8,4 +8,6 @@ interface IAnalisadorSintatico {
 
 	Character reduzirExpressao(String exp);
 
+	Character reduzirParenteses(Consumer<String> logger);
+
 }

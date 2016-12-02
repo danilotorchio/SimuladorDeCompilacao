@@ -9,6 +9,8 @@ public class AnalisadorLexico implements IAnalisadorLexico {
 	private ArrayList<Character> alfabeto;
 	private int pos;
 
+	public boolean lexicoAceito = false;
+
 	public AnalisadorLexico(String exp) {
 		this.exp = exp;
 		this.pos = 0;
@@ -30,6 +32,13 @@ public class AnalisadorLexico implements IAnalisadorLexico {
 				lexResult = i;
 				break;
 			}
+		}
+
+		if (lexResult >= 0) {
+			logger.accept("Erro: Caracter invalido: " + this.exp.charAt(lexResult));
+		} else {
+			this.lexicoAceito = true;
+			logger.accept("Verificação do alfabeto concluida...");
 		}
 
 		return lexResult;
@@ -98,6 +107,11 @@ public class AnalisadorLexico implements IAnalisadorLexico {
 	@Override
 	public ArrayList<Character> getAlfabeto() {
 		return this.alfabeto;
+	}
+
+	@Override
+	public String getExpressao() {
+		return this.exp;
 	}
 
 }

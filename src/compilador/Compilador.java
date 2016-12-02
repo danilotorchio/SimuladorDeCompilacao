@@ -10,9 +10,22 @@ public class Compilador implements ICompilador {
 	@Override
 	public void iniciarCompilacao(String expressao, Consumer<String> logger) {
 		lex = new AnalisadorLexico(expressao);
-		sin = new AnalisadorSintatico(lex);
+		lex.realizarAnaliseLexica(logger);
 
+		if (!lex.lexicoAceito) {
+			logger.accept("Processo de compilação finalizado com erro de analise lexica...");
+			return;
+		}
+
+		sin = new AnalisadorSintatico(lex);
 		sin.realizarAnaliseSintatica(logger);
+
+		if (!sin.sintaticaAceita) {
+			logger.accept("Processo de compilação finalizado com erro de analise sintatica...");
+			return;
+		}
+
+		logger.accept("Processo de compilação finalizado com sucesso!");
 	}
 
 }

@@ -21,4 +21,6 @@ interface IAnalisadorLexico {
 
 	boolean finalDaExpressaoLex();
 
+	String getExpressao();
+
 }
